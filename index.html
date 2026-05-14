@@ -4,6 +4,12 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     <title>Vue App</title>
+    <script src="https://unpkg.<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Vue App</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <style>
         * {
@@ -14,6 +20,798 @@
 
         body {
             background: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .main-container {
+            background-color: #9e9e9e;
+            border-radius: 20px;
+            padding: 30px;
+            width: 70vw;
+            height: 90vh;
+            margin: 0 auto;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            overflow: hidden;
+        }
+
+        /* Боковая панель - фиксированная ширина, высота 100% */
+        .sidebar {
+            width: 320px;
+            min-width: 300px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            flex-shrink: 0;
+            overflow-y: auto;
+        }
+
+        .sidebar-section {
+            background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%);
+            border-radius: 15px;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .section-header {
+            background: linear-gradient(135deg, #1abc9c 0%, #16a085 100%);
+            padding: 12px 15px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            text-align: center;
+            border-bottom: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .section-content {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .variable-item {
+            background-color: #ecf0f1;
+            border-radius: 10px;
+            padding: 10px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .variable-item:hover {
+            background-color: #3498db;
+            transform: translateX(5px);
+        }
+
+        .variable-item:hover .variable-name,
+        .variable-item:hover .variable-value {
+            color: white;
+        }
+
+        .variable-name {
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 13px;
+        }
+
+        .variable-value {
+            color: #e67e22;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .variable-value.empty {
+            color: #95a5a6;
+            font-style: italic;
+        }
+
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow: hidden;
+            height: 100%;  /* Важно: заставляет main-content занимать всю высоту */
+        }
+
+        .unified-bar {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            flex-shrink: 0;
+        }
+
+        .top-buttons {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .button-group {
+            position: relative;
+            display: inline-block;
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .main-btn, .plain-btn, .plus-btn, .clear-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+            text-align: center;
+            white-space: nowrap;
+            width: 100%;
+            display: inline-block;
+        }
+
+        .main-btn {
+            background-color: #3498db;
+        }
+
+        .main-btn:hover {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .plain-btn {
+            background-color: #1abc9c;
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .plain-btn:hover {
+            background-color: #16a085;
+            transform: translateY(-2px);
+        }
+
+        .plus-btn {
+            background-color: #e67e22;
+            flex: 0 0 auto;
+            width: auto;
+            min-width: 70px;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .plus-btn:hover {
+            background-color: #d35400;
+            transform: translateY(-2px);
+        }
+
+        .clear-btn {
+            background-color: #e74c3c;
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .clear-btn:hover {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        .dropdown-buttons {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            margin-top: 8px;
+            background-color: #ecf0f1;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 12px;
+            min-width: 200px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            z-index: 1000;
+        }
+
+        .func-btn {
+            background-color: #95a5a6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: background 0.2s;
+        }
+
+        .func-btn:hover {
+            background-color: #7f8c8d;
+        }
+
+        .slide-enter-active,
+        .slide-leave-active {
+            transition: all 0.3s ease;
+        }
+
+        .slide-enter-from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        .slide-enter-to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .slide-leave-from {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .slide-leave-to {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        .logs-container {
+            background-color: #1a1a2e;
+            border-radius: 12px;
+            padding: 15px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            border: 1px solid #3498db;
+            flex: 1;
+            min-height: 0;
+        }
+
+        .logs-title {
+            color: #3498db;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 14px;
+            border-bottom: 1px solid #3498db;
+            padding-bottom: 5px;
+            position: sticky;
+            top: 0;
+            background: #1a1a2e;
+        }
+
+        .log-entry {
+            color: #ecf0f1;
+            padding: 5px 0;
+            border-bottom: 1px solid #2c3e50;
+            font-size: 11px;
+        }
+
+        .log-error {
+            color: #e74c3c;
+            padding: 5px 0;
+            border-bottom: 1px solid #2c3e50;
+            font-size: 11px;
+        }
+
+        .log-time {
+            color: #e67e22;
+            margin-right: 10px;
+        }
+
+        .log-message {
+            color: #bdc3c7;
+        }
+
+        .input-section {
+            background-color: #ecf0f1;
+            border-radius: 12px;
+            padding: 20px;
+            flex-shrink: 0;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .value-input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .value-input {
+            flex: 1;
+            padding: 10px 12px;
+            font-size: 14px;
+            border: 2px solid #bdc3c7;
+            border-radius: 8px;
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .value-input:focus {
+            border-color: #3498db;
+        }
+
+        .value-input.error {
+            border-color: #e74c3c;
+            background-color: #fde8e8;
+        }
+
+        .set-value-btn {
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .set-value-btn:hover {
+            background-color: #2980b9;
+        }
+
+        .error-message {
+            color: #e74c3c;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .text-input {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 16px;
+            border: 2px solid #bdc3c7;
+            border-radius: 10px;
+            outline: none;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .text-input:focus {
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        }
+
+        .char-counter {
+            text-align: right;
+            font-size: 12px;
+            color: #7f8c8d;
+            margin-top: 8px;
+        }
+
+        .sidebar::-webkit-scrollbar,
+        .logs-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .sidebar::-webkit-scrollbar-track,
+        .logs-container::-webkit-scrollbar-track {
+            background: #7f8c8d;
+            border-radius: 10px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb,
+        .logs-container::-webkit-scrollbar-thumb {
+            background: #2c3e50;
+            border-radius: 10px;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .main-container {
+                width: 85%;
+                height: 90%;
+                padding: 15px;
+                flex-direction: column;
+            }
+
+            .sidebar {
+                width: 100%;
+                min-width: auto;
+                gap: 10px;
+            }
+
+            .top-buttons {
+                flex-direction: column;
+            }
+
+            .button-group, .plain-btn, .clear-btn {
+                width: 100%;
+                min-width: auto;
+            }
+
+            .plus-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div id="app" @click="closeAllDropdowns">
+    <div class="main-container" @click.stop>
+        <div class="sidebar">
+            <div class="sidebar-section">
+                <div class="section-header">Исходные данные (объединенные)</div>
+                <div class="section-content">
+                    <div class="variable-item" @click="selectVariable('Исходные', 'R (сопротивление резистора)', data.R || 'не задано', 'R')">
+                        <span class="variable-name">R (сопротивление резистора)</span>
+                        <span class="variable-value" :class="{ empty: !data.R && data.R !== 0 }">{{ (data.R !== undefined && data.R !== '') ? data.R : '—' }}</span>
+                    </div>
+
+                    <div class="variable-item" @click="selectVariable('Исходные', 'gamma_R (относительная погрешность)', data.gammaR || 'не задано', 'gammaR')">
+                        <span class="variable-name">gamma_R (относительная погрешность)</span>
+                        <span class="variable-value" :class="{ empty: !data.gammaR && data.gammaR !== 0 }">{{ (data.gammaR !== undefined && data.gammaR !== '') ? data.gammaR : '—' }}</span>
+                    </div>
+
+                    <div class="variable-item" @click="selectVariable('Исходные', 'P (мощность)', data.P || 'не задано', 'P')">
+                        <span class="variable-name">P (мощность)</span>
+                        <span class="variable-value" :class="{ empty: !data.P && data.P !== 0 }">{{ (data.P !== undefined && data.P !== '') ? data.P : '—' }}</span>
+                    </div>
+
+                    <div class="variable-item" @click="selectVariable('Исходные', 't_MAX (макс. температура)', data.tMax || 'не задано', 'tMax')">
+                        <span class="variable-name">t_MAX (макс. температура)</span>
+                        <span class="variable-value" :class="{ empty: !data.tMax && data.tMax !== 0 }">{{ (data.tMax !== undefined && data.tMax !== '') ? data.tMax : '—' }}</span>
+                    </div>
+
+                    <div class="variable-item" @click="selectVariable('Исходные', 'rho0 (удельное сопротивление)', data.rho0 || 'не задано', 'rho0')">
+                        <span class="variable-name">rho0 (удельное сопротивление)</span>
+                        <span class="variable-value" :class="{ empty: !data.rho0 && data.rho0 !== 0 }">{{ (data.rho0 !== undefined && data.rho0 !== '') ? data.rho0 : '—' }}</span>
+                    </div>
+
+                    <div class="variable-item" @click="selectVariable('Исходные', 'b (ширина резистора)', data.b || 'не задано', 'b')">
+                        <span class="variable-name">b (ширина резистора)</span>
+                        <span class="variable-value" :class="{ empty: !data.b && data.b !== 0 }">{{ (data.b !== undefined && data.b !== '') ? data.b : '—' }}</span>
+                    </div>
+
+                    <div class="variable-item" @click="selectVariable('Исходные', 'gamma_Rk (погрешность резистора)', data.gammaRk || 'не задано', 'gammaRk')">
+                        <span class="variable-name">gamma_Rk (погрешность резистора)</span>
+                        <span class="variable-value" :class="{ empty: !data.gammaRk && data.gammaRk !== 0 }">{{ (data.gammaRk !== undefined && data.gammaRk !== '') ? data.gammaRk : '—' }}</span>
+                    </div>
+
+                    <div class="variable-item" @click="selectVariable('Исходные', 'rho_K (контактное сопротивление)', data.rhoK || 'не задано', 'rhoK')">
+                        <span class="variable-name">rho_K (контактное сопротивление)</span>
+                        <span class="variable-value" :class="{ empty: !data.rhoK && data.rhoK !== 0 }">{{ (data.rhoK !== undefined && data.rhoK !== '') ? data.rhoK : '—' }}</span>
+                    </div>
+
+                    <div class="variable-item" @click="selectVariable('Исходные', 'delta_l (погрешность длины)', data.deltaL || 'не задано', 'deltaL')">
+                        <span class="variable-name">delta_l (погрешность длины)</span>
+                        <span class="variable-value" :class="{ empty: !data.deltaL && data.deltaL !== 0 }">{{ (data.deltaL !== undefined && data.deltaL !== '') ? data.deltaL : '—' }}</span>
+                    </div>
+
+                    <div class="variable-item" @click="selectVariable('Исходные', 'delta_l_Y (погрешность подложки)', data.deltaLY || 'не задано', 'deltaLY')">
+                        <span class="variable-name">delta_l_Y (погрешность подложки)</span>
+                        <span class="variable-value" :class="{ empty: !data.deltaLY && data.deltaLY !== 0 }">{{ (data.deltaLY !== undefined && data.deltaLY !== '') ? data.deltaLY : '—' }}</span>
+                    </div>
+
+                    <div class="variable-item" @click="selectVariable('Исходные', 'K_Ф (коэффициент формы)', data.kf || 'не задано', 'kf')">
+                        <span class="variable-name">K_Ф (коэффициент формы)</span>
+                        <span class="variable-value" :class="{ empty: !data.kf && data.kf !== 0 }">{{ (data.kf !== undefined && data.kf !== '') ? data.kf : '—' }}</span>
+                    </div>
+
+                    <div class="variable-item" @click="selectVariable('Исходные', 'l (длина резистора)', data.length || 'не задано', 'length')">
+                        <span class="variable-name">l (длина резистора)</span>
+                        <span class="variable-value" :class="{ empty: !data.length && data.length !== 0 }">{{ (data.length !== undefined && data.length !== '') ? data.length : '—' }}</span>
+                    </div>
+
+                    <div class="variable-item" @click="selectVariable('Исходные', 'C (емкость конденсатора)', data.C || 'не задано', 'C')">
+                        <span class="variable-name">C (емкость конденсатора)</span>
+                        <span class="variable-value" :class="{ empty: !data.C && data.C !== 0 }">{{ (data.C !== undefined && data.C !== '') ? data.C : '—' }}</span>
+                    </div>
+
+                    <div class="variable-item" @click="selectVariable('Исходные', 'gamma_c (погрешность конденсатора)', data.gammaC || 'не задано', 'gammaC')">
+                        <span class="variable-name">gamma_c (погрешность конденсатора)</span>
+                        <span class="variable-value" :class="{ empty: !data.gammaC && data.gammaC !== 0 }">{{ (data.gammaC !== undefined && data.gammaC !== '') ? data.gammaC : '—' }}</span>
+                    </div>
+
+                    <div class="variable-item" @click="selectVariable('Исходные', 'U_p (рабочее напряжение)', data.Up || 'не задано', 'Up')">
+                        <span class="variable-name">U_p (рабочее напряжение)</span>
+                        <span class="variable-value" :class="{ empty: !data.Up && data.Up !== 0 }">{{ (data.Up !== undefined && data.Up !== '') ? data.Up : '—' }}</span>
+                    </div>
+
+                    <div class="variable-item" @click="selectVariable('Исходные', 'gamma_po min (технологическая погрешность min)', data.gammaPoMin || 'не задано', 'gammaPoMin')">
+                        <span class="variable-name">gamma_po min (технолог. погрешность min)</span>
+                        <span class="variable-value" :class="{ empty: !data.gammaPoMin && data.gammaPoMin !== 0 }">{{ (data.gammaPoMin !== undefined && data.gammaPoMin !== '') ? data.gammaPoMin : '—' }}</span>
+                    </div>
+
+                    <div class="variable-item" @click="selectVariable('Исходные', 'gamma_po max (технологическая погрешность max)', data.gammaPoMax || 'не задано', 'gammaPoMax')">
+                        <span class="variable-name">gamma_po max (технолог. погрешность max)</span>
+                        <span class="variable-value" :class="{ empty: !data.gammaPoMax && data.gammaPoMax !== 0 }">{{ (data.gammaPoMax !== undefined && data.gammaPoMax !== '') ? data.gammaPoMax : '—' }}</span>
+                    </div>
+
+                    <div class="variable-item" @click="selectVariable('Исходные', 'delta_b (погрешность ширины)', data.deltaB || 'не задано', 'deltaB')">
+                        <span class="variable-name">delta_b (погрешность ширины)</span>
+                        <span class="variable-value" :class="{ empty: !data.deltaB && data.deltaB !== 0 }">{{ (data.deltaB !== undefined && data.deltaB !== '') ? data.deltaB : '—' }}</span>
+                    </div>
+
+                    <div class="variable-item" @click="selectVariable('Исходные', 'delta_L = delta_B (погрешность размеров)', data.deltaLB || 'не задано', 'deltaLB')">
+                        <span class="variable-name">delta_L = delta_B (погрешность размеров)</span>
+                        <span class="variable-value" :class="{ empty: !data.deltaLB && data.deltaLB !== 0 }">{{ (data.deltaLB !== undefined && data.deltaLB !== '') ? data.deltaLB : '—' }}</span>
+                    </div>
+
+                    <div class="variable-item" @click="selectVariable('Исходные', 'delta_I_Y (погрешность)', data.deltaIY || 'не задано', 'deltaIY')">
+                        <span class="variable-name">delta_I_Y (погрешность)</span>
+                        <span class="variable-value" :class="{ empty: !data.deltaIY && data.deltaIY !== 0 }">{{ (data.deltaIY !== undefined && data.deltaIY !== '') ? data.deltaIY : '—' }}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="unified-bar">
+                <div class="top-buttons">
+                    <div class="button-group" @click.stop>
+                        <button @click="toggleFirstGroup" class="main-btn">Кф</button>
+                        <transition name="slide">
+                            <div v-if="showFirstGroup" class="dropdown-buttons">
+                                <button class="func-btn" @click="onFunctionClick('Кф < 1')">Кф < 1</button>
+                                <button class="func-btn" @click="onFunctionClick('Кф > 1')">Кф > 1</button>
+                                <button class="func-btn" @click="onFunctionClick('Кф меандр')">Кф меандр</button>
+                            </div>
+                        </transition>
+                    </div>
+
+                    <div class="button-group" @click.stop>
+                        <button @click="toggleSecondGroup" class="main-btn">Контактный переход</button>
+                        <transition name="slide">
+                            <div v-if="showSecondGroup" class="dropdown-buttons">
+                                <button class="func-btn" @click="onFunctionClick('Контактный переход < 1')">Контактный переход < 1</button>
+                                <button class="func-btn" @click="onFunctionClick('Контактный переход > 1')">Контактный переход > 1</button>
+                                <button class="func-btn" @click="onFunctionClick('Контактный переход меандр')">Контактный переход меандр</button>
+                            </div>
+                        </transition>
+                    </div>
+
+                    <button class="plain-btn" @click="onFunctionClick('Конденсатор')">Конденсатор</button>
+                    <button @click="clearAll" class="clear-btn">Очистка</button>
+                    <button @click="onPlusClick" class="plus-btn">+</button>
+                </div>
+            </div>
+
+            <div class="logs-container">
+                <div class="logs-title">ЛОГИ СОБЫТИЙ</div>
+                <div v-for="(log, index) in logs" :key="index">
+                    <div v-if="log.type === 'error'" class="log-error">
+                        <span class="log-time">{{ log.time }}</span>
+                        <span class="log-message">ОШИБКА: {{ log.message }}</span>
+                    </div>
+                    <div v-else class="log-entry">
+                        <span class="log-time">{{ log.time }}</span>
+                        <span class="log-message">{{ log.message }}</span>
+                    </div>
+                </div>
+                <div v-if="logs.length === 0" style="color: #7f8c8d; text-align: center; padding: 20px;">
+                    Здесь будут отображаться логи событий...
+                </div>
+            </div>
+
+            <div class="input-section">
+                <label class="input-label">Выбранная переменная:</label>
+                <div style="background: #fff; border-radius: 10px; padding: 12px; margin-bottom: 15px;">
+                    <div v-if="selectedVariable.name">
+                        <strong>{{ selectedVariable.section }}: {{ selectedVariable.name }}</strong>
+                        <div style="margin-top: 8px; color: #e67e22;">
+                            Текущее значение: {{ selectedVariable.currentValue !== undefined && selectedVariable.currentValue !== '' ? selectedVariable.currentValue : '—' }}
+                        </div>
+                    </div>
+                    <div v-else style="color: #7f8c8d;">
+                        Нажмите на любую переменную слева
+                    </div>
+                </div>
+
+                <label class="input-label">Задать новое значение (только число int/float):</label>
+                <div class="value-input-group">
+                    <input
+                            type="text"
+                            v-model="inputValue"
+                            @keyup.enter="setVariableValue"
+                            class="value-input"
+                            :class="{ error: inputError }"
+                            placeholder="Введите только число (например: 2.5, 100, 0.05, 15)"
+                    />
+                    <button @click="setVariableValue" class="set-value-btn">Установить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const { createApp, ref } = Vue
+
+    createApp({
+        setup() {
+            const showFirstGroup = ref(false)
+            const showSecondGroup = ref(false)
+            const userText = ref('')
+            const inputValue = ref('')
+            const inputError = ref('')
+            const logs = ref([])
+
+            const data = ref({
+                R: 15,
+                gammaR: 15,
+                P: 50,
+                tMax: 85,
+                rho0: 250,
+                b: 1.25,
+                gammaRk: 2,
+                rhoK: 0.25,
+                deltaL: 0.04,
+                deltaLY: 0.1,
+                kf: 4,
+                length: 5,
+                C: 5100,
+                gammaC: 15,
+                Up: 6.3,
+                gammaPoMin: 5,
+                gammaPoMax: 5,
+                deltaB: 0.02,
+                deltaLB: 0.05,
+                deltaIY: 0.1
+            })
+
+            const selectedVariable = ref({
+                section: '',
+                name: '',
+                currentValue: '',
+                variableKey: '',
+                isDouble: false
+            })
+
+            const addLog = (message, type = 'info') => {
+                const now = new Date()
+                const time = `${now.getHours().toString().padStart(2, '0')}:${now.getMinutes().toString().padStart(2, '0')}:${now.getSeconds().toString().padStart(2, '0')}`
+                logs.value.unshift({ time: time, message: message, type: type })
+                if (logs.value.length > 50) logs.value.pop()
+            }
+
+            const closeAllDropdowns = () => {
+                if (showFirstGroup.value) {
+                    showFirstGroup.value = false
+                }
+                if (showSecondGroup.value) {
+                    showSecondGroup.value = false
+                }
+            }
+
+            const validateNumber = (value) => {
+                if (!value || value.trim() === '') {
+                    return 'Значение не может быть пустым'
+                }
+
+                const trimmed = value.trim().replace(',', '.')
+                const number = parseFloat(trimmed)
+                if (isNaN(number)) {
+                    return 'Введите корректное число (например: 2.5, 100, 0.05)'
+                }
+
+                if (number < 0) {
+                    return 'Значение не может быть отрицательным'
+                }
+
+                return null
+            }
+
+            const setVariableValue = () => {
+                if (!selectedVariable.value.variableKey) {
+                    inputError.value = 'Сначала выберите переменную слева'
+                    addLog('Ошибка: попытка установить значение без выбранной переменной', 'error')
+                    return
+                }
+
+                const error = validateNumber(inputValue.value)
+                if (error) {
+                    inputError.value = error
+                    addLog('Ошибка валидации для "' + selectedVariable.value.name + '": ' + error, 'error')
+                    return
+                }
+
+                inputError.value = ''
+                const parsedValue = parseFloat(inputValue.value.trim().replace(',', '.'))
+                const targetKey = selectedVariable.value.variableKey
+
+                if (targetKey in data.value) {
+                    data.value[targetKey] = parsedValue
+                    selectedVariable.value.currentValue = parsedValue
+                    addLog('Установлено значение "' + selectedVariable.value.name + '" = ' + parsedValue)
+                    inputValue.value = ''
+                } else {
+                    addLog('Ошибка: не найдена переменная "' + selectedVariable.value.name + '"', 'error')
+                }
+            }
+
+            const selectVariable = (section, name, currentValue, variableKey) => {
+                selectedVariable.value = {
+                    section: section,
+                    name: name,
+                    currentValue: currentValue !== 'не задано' ? currentValue : '',
+                    variableKey: variableKey,
+                    isDouble: false
+                }
+                inputError.value = ''
+                inputValue.value = ''
+                addLog('Выбрана переменная: ' + section + ' -> ' + name)
+            }
+
+            const onTextEnter = () => {
+                if (userText.value.trim()) {
+                    addLog('Комментарий: "' + userText.value + '"')
+                    userText.value = ''
+                }
+            }
+
+            const clearAll = () => {
+                userText.value = ''
+                inputValue.value = ''
+                inputError.value = ''
+                selectedVariable.value = { section: '', name: '', currentValue: '', variableKey: '', isDouble: false }
+                logs.value = []
+                addLog('ВСЕ ДАННЫЕ ОЧИЩЕНЫ')
+            }
+
+            const toggleFirstGroup = () => {
+                showFirstGroup.value = !showFirstGroup.value
+                if (showSecondGroup.value && showFirstGroup.value) {
+                    showSecondGroup.value = false
+                }
+                addLog('Группа "Кф" ' + (showFirstGroup.value ? 'открыта' : 'закрыта'))
+            }
+
+            const toggleSecondGroup = () => {
+                showSecondGroup.value = !showSecondGroup.value
+                if (showFirstGroup.value && showSecondGroup.value) {
+                    showFirstGroup.value = false
+                }
+                addLog('Группа "Контактный переход" ' + (showSecondGroup.value ? 'открыта' : 'закрыта'))
+            }
+
+            const onFunctionClick = (actionName) => {
+                addLog('Выполнено действие: ' + actionName)
+                showFirstGroup.value = false
+                showSecondGroup.value = false
+            }
+
+            const onPlusClick = () => {
+                addLog('Нажата кнопка добавления (+)')
+            }
+
+            return {
+                showFirstGroup, showSecondGroup, userText, inputValue, inputError, logs,
+                data, selectedVariable,
+                selectVariable, setVariableValue, onTextEnter,
+                toggleFirstGroup, toggleSecondGroup, onFunctionClick, onPlusClick, clearAll,
+                closeAllDropdowns
+            }
+        }
+    }).mount('#app')
+</script>
+</body>
+</html>
             display: flex;
             justify-content: center;
             align-items: center;
