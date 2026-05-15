@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover" />
-    <title>Vue App</title>
+    <title>Vue App — Инженерный калькулятор</title>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <style>
         * {
@@ -435,17 +435,17 @@
                     <!-- Три новых кнопки R, R1, R2, R3 -->
 
                     <div class="variable-item" @click="selectVariable('Исходные', 'R1 (сопротивление резистора 1)', data.R1, 'R1')">
-                        <span class="variable-name">R1 (сопротивление резистора 1)</span>
+                        <span class="variable-name">R1 </span>
                         <span class="variable-value">{{ formatValue(data.R1) }}</span>
                     </div>
 
                     <div class="variable-item" @click="selectVariable('Исходные', 'R2 (сопротивление резистора 2)', data.R2, 'R2')">
-                        <span class="variable-name">R2 (сопротивление резистора 2)</span>
+                        <span class="variable-name">R2 </span>
                         <span class="variable-value">{{ formatValue(data.R2) }}</span>
                     </div>
 
                     <div class="variable-item" @click="selectVariable('Исходные', 'R3 (сопротивление резистора 3)', data.R3, 'R3')">
-                        <span class="variable-name">R3 (сопротивление резистора 3)</span>
+                        <span class="variable-name">R3 </span>
                         <span class="variable-value">{{ formatValue(data.R3) }}</span>
                     </div>
 
@@ -546,9 +546,9 @@
                         <button @click="toggleSecondGroup" class="main-btn">Контактный переход</button>
                         <transition name="slide">
                             <div v-if="showSecondGroup" class="dropdown-buttons">
-                                <button class="func-btn" @click="onFunctionClick('Контактный переход < 1')">Контактный переход < 1</button>
-                                <button class="func-btn" @click="onFunctionClick('Контактный переход > 1')">Контактный переход > 1</button>
-                                <button class="func-btn" @click="onFunctionClick('Контактный переход меандр')">Контактный переход меандр</button>
+                                <button class="func-btn" @click="onFunctionClick('Контактный переход < 1')">Кп < 1</button>
+                                <button class="func-btn" @click="onFunctionClick('Контактный переход > 1')">Кп > 1</button>
+                                <button class="func-btn" @click="onFunctionClick('Контактный переход меандр')">Кп меандр</button>
                             </div>
                         </transition>
                     </div>
